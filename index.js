@@ -1,5 +1,5 @@
 const express = require('express')
-var cors = require('cors')
+const cors = require('cors')
 const app = express()
 const port = 8080
 
@@ -17,18 +17,6 @@ const soundDB = {
     'fish': '?>??뻐끔?',
     'tiger': '어흥'
 }
-
-// GET 요청 실습
-app.get('/sounds/:name', (req, res) => {
-    const { name } = req.params
-
-    if (soundDB.hasOwnProperty(name)) {
-        res.json({ 'sound': soundDB[name] })
-    } else {
-        res.json({ 'sound': '알 수 없는 동물' })
-    }
-
-})
 
 //id값 받기
 app.get('/users/:id', (req, res) => {
@@ -48,6 +36,18 @@ app.get('/query', (req, res) => {
         'size': q.size
     })
 })
+
+// GET 요청 실습
+app.get('/sounds/:animal', (req, res) => {
+    const { animal } = req.params
+    if (!animal) {
+        res.status(400).send("잘못된 요청입니다.");
+    } else if (!soundDB.hasOwnProperty(animal)) {
+        res.status(404).send("존재하지 않는 animal 입니다.");
+    }
+
+    res.status(200).json({ 'sound': soundDB[animal] });
+});
 
 // POST 요청 실습
 app.post('/sounds', (req, res) => {
