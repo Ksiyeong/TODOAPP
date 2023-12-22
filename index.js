@@ -77,6 +77,21 @@ app.patch('/sounds', (req, res) => {
     res.status(200).json({ animal: sound });
 });
 
+// DELETE 요청 실습
+app.delete('/sounds', (req, res) => {
+    const { animal } = req.body;
+
+    if (!animal) {
+        res.status(400).send("잘못된 요청입니다.");
+    } else if (!soundDB.hasOwnProperty(animal)) {
+        res.status(404).send("존재하지 않는 animal 입니다.")
+    }
+
+    delete soundDB[animal];
+    console.log(soundDB)
+    res.sendStatus(204);
+});
+
 
 // 포트
 app.listen(port, () => {
