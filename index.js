@@ -54,11 +54,13 @@ app.post('/sounds', (req, res) => {
     const { animal, sound } = req.body;
 
     if (!animal || !sound) {
-        res.sendStatus(400);
+        res.status(400).send("잘못된 요청입니다.");
+    } else if (soundDB.hasOwnProperty(animal)) {
+        res.status(409).send("이미 존재하는 animal 입니다.")
     }
-    
+
     soundDB[animal] = sound;
-    res.sendStatus(201);
+    res.status(201).json({ animal: sound });
 });
 
 
