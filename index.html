@@ -15,7 +15,7 @@
         function getSound() {
             const name = document.getElementById('name').value
 
-            fetch(`http://localhost:8080/sound/${name}`)
+            fetch(`http://localhost:8080/sounds/${name}`)
                 .then((response) => response.json())
                 .then((data) => {
                     console.log(data)

@@ -19,7 +19,7 @@ const soundDB = {
 }
 
 // GET 요청 실습
-app.get('/sound/:name', (req, res) => {
+app.get('/sounds/:name', (req, res) => {
     const { name } = req.params
 
     if (soundDB.hasOwnProperty(name)) {
@@ -31,7 +31,7 @@ app.get('/sound/:name', (req, res) => {
 })
 
 //id값 받기
-app.get('/user/:id', (req, res) => {
+app.get('/users/:id', (req, res) => {
     const q = req.params
     console.log(q.id)
 
