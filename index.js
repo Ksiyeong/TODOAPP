@@ -63,6 +63,20 @@ app.post('/sounds', (req, res) => {
     res.status(201).json({ animal: sound });
 });
 
+// PATCH 요청 실습
+app.patch('/sounds', (req, res) => {
+    const { animal, sound } = req.body;
+
+    if (!animal || !sound) {
+        res.status(400).send("잘못된 요청입니다.");
+    } else if (!soundDB.hasOwnProperty(animal)) {
+        res.status(404).send("존재하지 않는 animal 입니다.")
+    }
+
+    soundDB[animal] = sound;
+    res.status(200).json({ animal: sound });
+});
+
 
 // 포트
 app.listen(port, () => {
