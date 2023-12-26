@@ -1,5 +1,7 @@
 # MY LOCAL
 localTestOnly.js
+# mac os 설정파일
+.DS_Store
 
 # Logs
 logs
