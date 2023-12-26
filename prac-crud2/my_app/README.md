@@ -1,6 +1,6 @@
 # Jeju node.js
 
-</br>
+<br />
 
 ## 실행 방법
 
@@ -9,7 +9,7 @@ npm install
 npm run start
 ```
 
-</br>
+<br />
 
 ## npm install '~~' -D
 
@@ -19,7 +19,7 @@ npm run start
 
 이 경우, `--production` 옵션을 추가하여 배포할 프로젝트를 빌드할 때, devDependencies에 있는 패키지들은 포함되지 않는다.
 
-</br>
+<br />
 
 ## package.json.scripts
 
@@ -41,7 +41,7 @@ npm run start -> node index.js
 npm run dev -> nodemon index.js
 ```
 
-</br>
+<br />
 
 ## 템플릿 엔진 - nunjucks
 
@@ -49,11 +49,23 @@ npm run dev -> nodemon index.js
 2. `nunjucks.configure()`
 3. html 작성 {% %} 문 사용하여 공통된 부분 제거
 
-</br>
+<br />
+
+## html form 태그를 이용한 데이터 전송
+
+```javascript
+import bodyParser from 'body-parser';
+// bodyParser 세팅 -> form 데이터 사용 시
+app.use(bodyParser.json());
+// express 기본 모듈 사용
+app.use(bodyParser.urlencoded({extended: false})); 
+```
+
+<br />
 
 ## fs 모듈을 이용한 임시 DB
 
-```
+```javascript
 import fs from 'fs';
 ```
 
