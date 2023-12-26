@@ -1,17 +1,13 @@
-# 1. main
-## 1-1. 목표
-node.js 기본 CRUD를 작성할 수 있다.
+# node.js 기본 사용법
 
 <br>
 
-## 1-2. 실행방법
-```
-npm install
-npm start
-```
+## 1. prac-crud
+
+express를 활용하여 node.js 기본 CRUD를 작성할 수 있다.
 
 <br>
 
-# 2. jeju-prac
-## 2-1. 목표
+## 2. prac-crud2/my_app
+
 `ESM` 스타일 및 `DB` 연결을 할 수 있다.
