@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/write', (req, res) => {
-    res.render('write.html');
+    res.render('write');
 });
 
 app.listen(port, () => {
