@@ -61,11 +61,12 @@ app.post('/diaries', (req, res) => {
     // 2. json형식으로 변환
     const jsonDB = JSON.parse(bufferDB); // json형식으로 변환
     // 3. 데이터 입력
+    diary.id = jsonDB.length;
     jsonDB.push(diary);
     // 4. json->버퍼 변환 후 파일에 저장
     fs.writeFileSync(filePath, JSON.stringify(jsonDB));
 
-    res.status(201).end();
+    res.redirect(`/detail/${diary.id}`)
 });
 
 app.listen(port, () => {
