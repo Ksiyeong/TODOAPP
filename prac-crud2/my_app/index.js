@@ -12,7 +12,7 @@ const port = 3000;
 
 // bodyParser 세팅 -> form 데이터 사용 시
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false})); // express 기본 모듈 사용
+app.use(bodyParser.urlencoded({ extended: false })); // express 기본 모듈 사용
 // app.use(express.json());
 
 // file path
@@ -37,6 +37,13 @@ app.get('/', (req, res) => {
 
 app.get('/write', (req, res) => {
     res.render('write');
+});
+
+app.get('/detail/:id', (req, res) => {
+    const id = req.params.id;
+    const diary = JSON.parse(fs.readFileSync(filePath))[id];
+
+    res.render('detail', { 'diary': diary });
 });
 
 app.post('/diaries', (req, res) => {
