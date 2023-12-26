@@ -46,8 +46,14 @@ npm run dev -> nodemon index.js
 ## 템플릿 엔진 - nunjucks
 
 1. import문 추가
+
 2. `nunjucks.configure()`
+
 3. html 작성 {% %} 문 사용하여 공통된 부분 제거
+
+4. {{ 변수명.프로퍼티 }} 로 접근가능
+
+    변수 넘겨 줄때는`res.render('detail', { 'diary': diary });`
 
 <br />
 
@@ -75,3 +81,7 @@ import fs from 'fs';
 4. json -> 버퍼 다시 변환 후 파일에 저장
 
 ⭐️ 해당 방법은 어디까지 임시DB이며 다른 다양한 더 좋은 방식이 존재함
+
+<br />
+
+## nunjucks
