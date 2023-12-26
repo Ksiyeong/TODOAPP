@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if diary %}
+<h1>글 상세 페이지입니다.</h1>
+
+<div>
+    <p>글 제목: {{ diary.title }}</p>
+    <p>글 내용: {{ diary.content }}</p>
+    <p>날짜: {{ diary.date }}</p>
+    <input type="submit" value="제출">
+    <a href="/edit/{{ diary.id }}" class="btn">수정하기</a>
+</div>
+
+{% else %}
+<h1>찾으시는 일기가 없습니다!</h1>
+
+{% endif %}
+
+{% endblock %}
