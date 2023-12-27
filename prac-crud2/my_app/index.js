@@ -32,7 +32,8 @@ nunjucks.configure('views', {
 // Middleware
 // main page GET
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/main.html');
+    const diaries = JSON.parse(fs.readFileSync(filePath));
+    res.render('main', { 'diaries': diaries });
 });
 
 app.get('/write', (req, res) => {
