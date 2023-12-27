@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>메인 페이지</h1>
+
+{% if diaries.length > 0 %}
+<table class="table">
+    <tr>
+        <th>번호</th>
+        <th>제목</th>
+        <th>날짜</th>
+    </tr>
+    {% for diary in diaries %}
+    <tr>
+        <th>{{ diary.id }}</th>
+        <th><a href="/detail/{{ diary.id }}">{{ diary.title }}</a></th>
+        <th>{{ diary.date }}</th>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>작성된 글이 없습니다.</p>
+{% endif %}
+
+{% endblock %}
