@@ -84,4 +84,78 @@ import fs from 'fs';
 
 <br />
 
-## nunjucks
+## mongoDB
+
+### community 버전 설치
+https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/
+
+```
+brew tap mongodb/brew
+brew update
+brew install mongodb/brew/mongodb-community
+```
+
+<br />
+
+### shell
+
+mongoDB CLI 툴
+
+```
+brew install mongodb-community-shell
+
+```
+
+<br />
+
+### compass
+
+mongoDB GUI 툴
+
+- https://www.mongodb.com/products/tools/compass
+
+<br />
+
+## mongoose
+
+mongoDB에 접근하기 위한 라이브러리
+
+```
+npm i mongoose
+```
+
+mongoose 기본 세팅
+
+```javascript
+// mongoose connect
+mongoose
+    .connect('mongodb://127.0.0.1:27017/jeju')
+    .then(() => console.log('mongoDB 연결 성공'))
+    .catch(e => console.log(e));
+
+// mongoose set
+const { Schema } = mongoose;
+const WritingSchema = new Schema({
+    title: String,
+    content: String,
+    date: {
+        type: Date,
+        default: Date.now
+    }
+});
+const Writing = mongoose.model('Writing', WritingSchema);
+```
+
+post 요청
+
+```javascript
+// mongoDB에 저장
+const writing = new Writing({
+    title: title,
+    content: content
+});
+
+const result = await writing.save();
+```
+
+<br />
