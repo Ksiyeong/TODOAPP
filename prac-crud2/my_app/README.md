@@ -158,4 +158,16 @@ const writing = new Writing({
 const result = await writing.save();
 ```
 
+데이터 읽어오기
+```javascript
+// 모든 데이터를 읽어옴
+const diaries = await Writing.find();
+
+// 특정 id의 데이터를 읽어옴
+let diary = null;
+if (mongoose.Types.ObjectId.isValid(id)) { // id에 대한 유효성 검사를 해줘야함.
+    diary = await Writing.findById(id);
+}
+```
+
 <br />

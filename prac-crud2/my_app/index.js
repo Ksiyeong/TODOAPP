@@ -56,8 +56,9 @@ const Writing = mongoose.model('Writing', WritingSchema);
 
 // Middleware
 // main page GET
-app.get('/', (req, res) => {
-    const diaries = JSON.parse(fs.readFileSync(filePath));
+app.get('/', async (req, res) => {
+    // const diaries = JSON.parse(fs.readFileSync(filePath));
+    const diaries = await Writing.find();
     res.render('main', { 'diaries': diaries });
 });
 
@@ -65,9 +66,15 @@ app.get('/write', (req, res) => {
     res.render('write');
 });
 
-app.get('/detail/:id', (req, res) => {
+app.get('/detail/:id', async (req, res) => {
     const id = req.params.id;
-    const diary = JSON.parse(fs.readFileSync(filePath))[id];
+    // const diary = JSON.parse(fs.readFileSync(filePath))[id];
+    // const diary = await Writing.findOne({ _id: id });
+
+    let diary = null;
+    if (mongoose.Types.ObjectId.isValid(id)) {
+        diary = await Writing.findById(id);
+    }
 
     res.render('detail', { 'diary': diary });
 });
