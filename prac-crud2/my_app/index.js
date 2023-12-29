@@ -2,7 +2,7 @@
 import express from 'express';
 import path from 'path';
 import nunjucks from 'nunjucks'; // 템플릿 엔진
-import fs from 'fs';
+// import fs from 'fs';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 
@@ -112,6 +112,25 @@ app.post('/diaries', async (req, res) => {
     */
 
     // res.redirect(`/detail/${diary.id}`)
+});
+
+app.delete('/diaries/:id', async (req, res) => {
+    const id = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        console.log('유효하지 않은 id입니다.');
+        return res.redirect(`/detail/${id}`);
+    }
+
+    const diary = await Writing.findById(id);
+    if (diary == null) {
+        console.log('404 NOT FOUND');
+    } else {
+        await Writing.deleteOne(diary);
+        console.log('삭제 요청 처리 완료');
+    }
+
+    return res.status(204).send('No content');
 });
 
 app.listen(port, () => {

@@ -9,8 +9,9 @@
     <p>글 제목: {{ diary.title }}</p>
     <p>글 내용: {{ diary.content }}</p>
     <p>날짜: {{ diary.date }}</p>
-    <input type="submit" value="제출">
+
     <a href="/edit/{{ diary.id }}" class="btn">수정하기</a>
+    <button onclick="deleteDiary('{{ diary.id }}')">삭제</button>
 </div>
 
 {% else %}
@@ -18,4 +19,12 @@
 
 {% endif %}
 
+<script>
+    async function deleteDiary(id) {
+        await fetch(`/diaries/${id}`, {
+            method: "DELETE",
+        });
+        location.replace('/');
+    }
+</script>
 {% endblock %}
