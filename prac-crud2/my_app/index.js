@@ -111,13 +111,9 @@ app.post('/diaries', async (req, res) => {
         content: content
     });
 
-    const result = await writing.save().then(() => {
-        console.log('Success');
-        res.render('detail', { title: title, content: content });
-    }).catch(err => {
-        console.error(err);
-        res.render('write');
-    })
+    const diary = await writing.save();
+
+    res.redirect(`/detail/${diary.id}`);
 });
 
 app.delete('/diaries/:id', async (req, res) => {
