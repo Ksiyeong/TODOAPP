@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>글 수정 페이지입니다.</h1>
+
+<div>
+    <p>글 제목: <input type="text" id="title" value="{{ diary.title }}"></p>
+    <p>글 내용: <input type="text" id="content" value="{{ diary.content }}"></p>
+    <input type="submit" value="제출" onclick="patchDiary('{{ diary.id }}')">
+</div>
+
+<script>
+    async function patchDiary(id) {
+        await fetch(`/diaries/${id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                title: document.getElementById('title').value,
+                content: document.getElementById('content').value
+            }),
+        });
+
+        location.replace(`/detail/${id}`);
+    }
+</script>
+{% endblock %}

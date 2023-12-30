@@ -66,6 +66,28 @@ app.get('/write', (req, res) => {
     res.render('write');
 });
 
+app.get('/edit/:id', async (req, res) => {
+    const id = req.params.id;
+
+    let diary = null;
+    if (mongoose.Types.ObjectId.isValid(id)) {
+        diary = await Writing.findById(id);
+    }
+
+    res.render('edit', { 'diary': diary });
+});
+
+app.patch('/diaries/:id', async (req, res) => {
+    const id = req.params.id;
+    const { title, content } = req.body;
+
+    if (mongoose.Types.ObjectId.isValid(id)) {
+        await Writing.findByIdAndUpdate(id, { title: title, content: content });
+    }
+
+    return res.status(200).send('수정이 완료되었습니다.');
+});
+
 app.get('/detail/:id', async (req, res) => {
     const id = req.params.id;
     // const diary = JSON.parse(fs.readFileSync(filePath))[id];
@@ -93,25 +115,9 @@ app.post('/diaries', async (req, res) => {
         console.log('Success');
         res.render('detail', { title: title, content: content });
     }).catch(err => {
-        console.error(err)
-        res.render('write')
+        console.error(err);
+        res.render('write');
     })
-
-
-    /*
-    // 데이터 저장
-    // 1. 임시 DB(json파일) 파일 읽어오기
-    const bufferDB = fs.readFileSync(filePath); // 버퍼데이터형식
-    // 2. json형식으로 변환
-    const jsonDB = JSON.parse(bufferDB); // json형식으로 변환
-    // 3. 데이터 입력
-    diary.id = jsonDB.length;
-    jsonDB.push(diary);
-    // 4. json->버퍼 변환 후 파일에 저장
-    fs.writeFileSync(filePath, JSON.stringify(jsonDB));
-    */
-
-    // res.redirect(`/detail/${diary.id}`)
 });
 
 app.delete('/diaries/:id', async (req, res) => {
