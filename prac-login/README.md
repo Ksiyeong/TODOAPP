@@ -101,3 +101,22 @@ router.get("/login", ctrl.login);
 ```
 
 <br />
+
+## 5. app.listen() 모듈화
+
+`./bin/www.js` 생성 후 해당 폴더에 관련 내용들 이동
+
+```javascript
+// www.js
+"use strict";
+
+const app = require("../app"); // app.js 파일 임포트
+const PORT = 3000;
+
+app.listen(PORT, () => {
+    console.log(`${PORT}번 포트에서 서버 가동 중!`);
+});
+
+// app.js
+module.exports = app;
+```
