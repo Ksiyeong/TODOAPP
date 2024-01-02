@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "description": "단순한 로그인 기능 구현 연습 예제",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "bin": {
+    "prac-login": "www.js"
   },
-  "author": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./bin/www.js"
+  },
+  "author": "Ksiyeong",
   "license": "ISC",
   "dependencies": {
     "ejs": "^3.1.9",
