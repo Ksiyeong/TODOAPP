@@ -120,3 +120,31 @@ app.listen(PORT, () => {
 // app.js
 module.exports = app;
 ```
+
+<br />
+
+## 6. 프론트단 js파일 만들기
+
+js파일을 위치하고 싶은 경로에 생성
+
+```
+src/public/js/home/login.js
+```
+
+<br />
+
+해당 js파일을 원하는 ejs(html) 파일에 `<script>` 추가
+
+```html
+<script src="/js/home/login.js"></script>
+```
+
+<br />
+
+`app.js`에 위에서 지정한 프런트단 js파일 위치 설정
+
+```javascript
+app.use(express.static(`${__dirname}/src/public`));
+```
+
+<br />
