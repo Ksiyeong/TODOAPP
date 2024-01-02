@@ -4,7 +4,7 @@
 
 <br />
 
-## 실행 방법
+## 1. 실행 방법
 
 ```
 npm install
@@ -13,7 +13,7 @@ npm run start
 
 <br />
 
-## 템플릿 엔진 ejs
+## 2. 템플릿 엔진 ejs
 
 ```javascript
 // ejs 설치
@@ -25,7 +25,7 @@ app.set("view engine", "ejs");
 
 <br />
 
-## MVC View 분리하기
+## 3. MVC View 분리하기
 
 `views`라는 폴더를 만들고 해당 폴더에서 view관련 파일들을 관리한다.
 
@@ -36,7 +36,9 @@ app.set("views", "./views");
 
 <br />
 
-## Route 분리하기
+## 4. MVC Controller 분리하기
+
+### 4-1. Route 분리하기
 
 보통 관례적으로 routes라는 폴더 안에 모아준다.
 해당 폴더 하위에 따로 코드들을 모아준 뒤, module화 선언을 해준다.
@@ -66,3 +68,36 @@ app.use("/", home);
 
 <br />
 
+### 4-2. Controller 분리하기
+
+위에서 분리한 `routes/homes/index.js` 에서 router.get메서드의 내부 함수부분을 따로 분리한다.
+
+```javascript
+// home.ctrl.js
+
+// 함수 선언
+const home = (req, res) => {
+    res.render("home/index");
+};
+const login = (req, res) => {
+    res.render("home/login");
+};
+
+// 모듈화 선언
+module.exports = {
+    home,
+    login,
+};
+```
+
+```javascript
+// index.js
+
+// 모듈 사용 선언
+const ctrl = require("./home.ctrl");
+
+router.get("/", ctrl.home);
+router.get("/login", ctrl.login);
+```
+
+<br />
