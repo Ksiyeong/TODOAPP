@@ -1,7 +1,5 @@
 "use strict";
 
-console.log("프론트단 자바스크립트 파일 동작 테스트");
-
 // DOM -> Document Object Model
 
 const id = document.querySelector("#id"),
@@ -16,5 +14,11 @@ function login() {
         password: password.value
     };
 
-    console.log(req);
+    fetch("/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(req),
+    });
 }

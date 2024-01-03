@@ -194,3 +194,22 @@ function login() {
 ```
 
 <br />
+
+## 8. 로그인 요청 `fetch`생성
+
+fetch를 이용하여 서버에게 다양한 요청을 할 수 있다.
+
+```javascript
+fetch("/login",{
+    method:"POST",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify(req),
+});
+// 위 예시 외에도 다양한 것들을 담을 수 있음.
+```
+
+<br />
+
+## 9.
