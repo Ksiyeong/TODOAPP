@@ -148,3 +148,49 @@ app.use(express.static(`${__dirname}/src/public`));
 ```
 
 <br />
+
+## 7. `DOM`을 이용하여 HTML 객체 읽어오기
+
+`DOM(Document Object Model)` 문서 객체 모델
+
+`document.~~`와 같은 방법으로 사용
+
+`javascript`와 `HTML` 사이에서 둘을 연결해주는 프로그래밍 `interface` 이다.
+(`javascript`는 `DOM`과 통신하고, `HTML`은 `DOM`과 통신하는 모양세)
+
+<br />
+
+`HTML`에서는 다음과 같은 방법으로 id 등의 각 태그들을 특정할 수 있도록 명시해준다.
+
+`<script>`에서 `defer`의 역할 : `<script>`다운로드를 백그라운드에서 진행하며, HTML이 완전히 로드된 이후에 해당 `<script>`를 실행한다.
+
+```HTML
+<script src="/js/home/login.js" defer></script>
+
+<input id="id" type="text" placeholder="아이디"><br>
+<input id="password" type="text" placeholder="비밀번호"><br>
+```
+
+<br />
+
+`javascript`에서는 다음과 같은 방식으로 작성한다.
+
+```javascript
+// javascript, HTML태그에 id를 사용했을 경우 #을 사용. 이외에도 다양한 방법으로 접근 가능
+const id = document.querySelector("#id"),
+    password = document.querySelector("#password"),
+    loginBtn = document.querySelector("button");
+
+loginBtn.addEventListener("click", login);
+
+function login() {
+    const req = {
+        id: id.value,
+        password: password.value
+    };
+
+    console.log(req);
+}
+```
+
+<br />
