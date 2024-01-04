@@ -19,8 +19,7 @@ class User {
     }
 
     register() {
-        // const { id, name, password, confirmPassword } = this.body;
-        UserStorage.save(this.body);
+        return UserStorage.save(this.body);
     }
 }
 

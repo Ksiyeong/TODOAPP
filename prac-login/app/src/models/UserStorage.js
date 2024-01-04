@@ -40,7 +40,7 @@ class UserStorage {
         this.#users.id.push(userInfo.id);
         this.#users.name.push(userInfo.name);
         this.#users.password.push(userInfo.password);
-        console.log(this.#users);
+        return { success: true, msg: "회원가입이 완료되었습니다." };
     }
 }
 
