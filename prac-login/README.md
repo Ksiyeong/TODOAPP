@@ -212,4 +212,90 @@ fetch("/login",{
 
 <br />
 
-## 9.
+## 9. MVC Model 분리하기
+
+Controller에 모든 로직이 들어있는 형태는 협업, 유지보수, 가독성 등 다양한 방면에서 좋지않다.
+분리해주도록 하자.
+
+UserStorage와 User로 분리하여 각각 코드를 작성한다.
+
+<br />
+
+### 9-1. UserStorage
+
+UserStorage는 DB에 접근해 데이터를 가져오는 역할이다.
+(스프링으로 치면 Repository정도 되는듯)
+
+`src/models/UserStorage.js`
+
+```javascript
+"use strict";
+
+class UserStorage {
+    // 임시 데이터
+    static #users = { // 변수앞에 #을 붙이면 private으로 설정됨.
+        id: ["test0", "test1", "test2"],
+        password: ["0000", "1111", "2222"],
+        name: ["테스트0", "테스트1", "테스트2"],
+    };
+
+    static getUsers(...fields) {
+        const users = fields.reduce((users, field) => { // for문 써도 무방함
+
+            if (this.#users.hasOwnProperty(field)) {
+                users[field] = this.#users[field];
+            }
+            return users
+        }, {});
+
+        return users;
+    }
+
+    static getUserInfo(id) {
+        const idx = this.#users.id.indexOf(id);
+        const userInfo = Object.keys(this.#users).reduce((user, info) => {
+            user[info] = this.#users[info][idx];
+            return user;
+        }, {});
+
+        return userInfo;
+    }
+}
+
+module.exports = UserStorage;
+```
+
+<br />
+
+### 9-2. User
+
+Controller와 UserStorage 사이에서 business로직을 처리하는 단계(?)
+
+`src/models/User.js`
+
+```javascript
+"use strict";
+
+const UserStorage = require("./UserStorage");
+
+class User {
+    constructor(body) {
+        this.body = body;
+    }
+
+    login() {
+        const { id, password } = UserStorage.getUserInfo(this.body.id);
+        if (id) {
+            if (password === this.body.password) {
+                return { success: true, msg: "로그인 성공" };
+            }
+            return { success: false, msg: "잘못된 비밀번호" };
+        }
+        return { success: false, msg: "존재하지 않는 아이디" };
+    }
+}
+
+module.exports = User;
+```
+
+<br />
