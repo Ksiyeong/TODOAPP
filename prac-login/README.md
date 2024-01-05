@@ -299,3 +299,45 @@ module.exports = User;
 ```
 
 <br />
+
+## 10. 파일 읽어오기
+
+데이터베이스를 연결하기 전에 임시로 json파일을 이용하여 데이터베이스를 만들어 보자.
+
+<br />
+
+### 10-1. 파일을 프로미스 객체로 읽어오기
+
+성공했을 때, `.then()`
+
+실패했을때, `.catch()` 를 사용할 수 있음
+
+```javascript
+const fs = require("fs").promises; // promise객체를 반환하도록 설정
+
+static getUserInfo() {
+    fs.readFile("./src/databases/users.json")
+        .then(data => {
+            // JSON파일이지만 읽어올땐, 기계어이기때문에 JSON으로 변환
+            const users = JSON.parse(data);
+            ...
+            return userInfo;
+            })
+        .catch(console.log);
+}
+```
+
+<br />
+
+### 10-2. async, await
+
+node.js는 비동기적으로 동작하기 때문에 파일을 읽는 속도는 상대적으로 느리므로 파일을 완전히 읽기 전에 다음 동작을 하게 된다.
+그러므로 동기적으로 동작하도록 async, await을 사용해주어야 한다.
+
+```javascript
+async login() {
+    const userInfo = await getUserInfo();
+}
+```
+
+<br />
