@@ -20,15 +20,21 @@ class UserStorage {
         return userInfo;
     }
 
+    static #getUsers(data, fields) {
+        const users = JSON.parse(data);
+        return fields.reduce((newUsers, field) => {
+            if (users.hasOwnProperty(field)) {
+                newUsers[field] = users[field];
+            }
+            return newUsers
+        }, {});
+    }
     static getUsers(...fields) {
-        // const users = fields.reduce((users, field) => {
-        //     if (this.#users.hasOwnProperty(field)) {
-        //         users[field] = this.#users[field];
-        //     }
-        //     return users
-        // }, {});
-
-        return users;
+        return fs.readFile("./src/databases/users.json")
+            .then(data => {
+                return this.#getUsers(data, fields);
+            })
+            .catch(console.log);
     }
 
     static getUserInfo(id) {
@@ -39,10 +45,18 @@ class UserStorage {
             .catch(console.log);
     }
 
-    static save(userInfo) {
-        // this.#users.id.push(userInfo.id);
-        // this.#users.name.push(userInfo.name);
-        // this.#users.password.push(userInfo.password);
+    static async save(userInfo) {
+        const users = await this.getUsers("id", "password", "name");
+
+        if (users.id.includes(userInfo.id)) {
+            throw "이미 사용중인 아이디입니다.";
+        }
+
+        users.id.push(userInfo.id);
+        users.name.push(userInfo.name);
+        users.password.push(userInfo.password);
+        fs.writeFile("./src/databases/users.json", JSON.stringify(users));
+
         return { success: true, msg: "회원가입이 완료되었습니다." };
     }
 }

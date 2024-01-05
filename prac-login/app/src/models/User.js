@@ -18,8 +18,12 @@ class User {
         return { success: false, msg: "존재하지 않는 아이디" };
     }
 
-    register() {
-        return UserStorage.save(this.body);
+    async register() {
+        try {
+            return await UserStorage.save(this.body);
+        } catch (err) {
+            return { success: false, msg: err };
+        }
     }
 }
 
