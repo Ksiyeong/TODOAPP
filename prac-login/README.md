@@ -341,3 +341,53 @@ async login() {
 ```
 
 <br />
+
+## 11. mariaDB
+
+`npm i mariadb` 패키지 설치를 해줍니다.
+
+<br />
+
+### 11-1. db연결 및 모듈화
+
+이후 `app/src/config/db.js` 를 생성하여 db 연결 및 모듈화합니다.
+
+```javascript
+"use strict";
+
+const mariadb = require("mariadb/callback");
+
+const db = mariadb.createConnection({
+    host: "localhost",
+    port: "3307",
+    user: "root",
+    database: "prac_login"
+});
+
+module.exports = db;
+```
+
+<br />
+
+### 11-2. 쿼리 조회하기
+
+`UserStorage.js`에서 db모듈을 사용하는 메서드를 생성해줍니다.
+
+`db.query()`는 프로미스 객체를 반환하므로, 프로미스 객체를 생성하여 반환하도록 해줍니다.
+
+프로미스 객체는 콜백함수를 인자로 받으며 성공 시 resolve를 실행하고 실패 시 reject를 실행합니다.
+
+```javascript
+const db = require("../config/db");
+
+static getUserInfo(id) {
+    return new Promise((resolve, reject) => {
+        db.query("SELECT * FROM users WHERE id = ?", [id], (err, data) => {
+            if (err) reject(err);
+            resolve(data[0]);
+        });
+    });
+}
+```
+
+<br />

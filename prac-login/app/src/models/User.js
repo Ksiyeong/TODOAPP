@@ -8,7 +8,7 @@ class User {
     }
 
     async login() {
-        const { id, password } = await UserStorage.getUserInfo(this.body.id);
+        const { id, user_password: password } = await UserStorage.getUserInfo(this.body.id);
         if (id) {
             if (password === this.body.password) {
                 return { success: true, msg: "로그인 성공" };
