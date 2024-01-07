@@ -8,14 +8,18 @@ class User {
     }
 
     async login() {
-        const { id, user_password: password } = await UserStorage.getUserInfo(this.body.id);
-        if (id) {
-            if (password === this.body.password) {
+        try {
+            const user = await UserStorage.getUserInfo(this.body.id);
+            if (!user) {
+                return { success: false, msg: "존재하지 않는 아이디" };
+            } else if (user.user_password !== this.body.password) {
+                return { success: false, msg: "잘못된 비밀번호" };
+            } else {
                 return { success: true, msg: "로그인 성공" };
             }
-            return { success: false, msg: "잘못된 비밀번호" };
+        } catch (error) {
+            return { success: false, msg: error };
         }
-        return { success: false, msg: "존재하지 않는 아이디" };
     }
 
     async register() {
