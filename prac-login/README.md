@@ -391,3 +391,55 @@ static getUserInfo(id) {
 ```
 
 <br />
+
+## 12. dotenv로 환경변수 관리하기
+
+깃허브에 올라가면 안되는 민감정보들을 환경변수로 등록하여 따로 관리하도록 도와주는 모듈
+
+`npm i dotenv`를 통하여 해당 모듈을 설치한다.
+
+<br />
+
+`app/.env`경로에 파일을 생성한 뒤 등록할 환경변수를 입력한다.
+
+```javascript
+PORT = 3000
+
+# DB
+DB_HOST = "주소"
+DB_PORT = "포트"
+DB_USER = "유저명"
+DB_PASSWORD = "암호"
+DB_DATABASE = "데이터베이스명"
+```
+
+<br />
+
+아래와 같이 작성하면 환경변수를 사용할 준비가 모두 끝이난다.
+
+```javascript
+// app.js
+const dotenv = require("dotenv");
+dotenv.config();
+```
+
+<br />
+
+이 후 해당 환경변수를 사용할 파일에서 `process.env.환경변수명`을 통하여 사용할 수 있다.
+
+```javascript
+// 예시
+const db = mariadb.createConnection({
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+});
+```
+
+<br />
+
+### ***‼️`.gitignore`에 해당 환경변수 파일은 깃허브에 업로드되지 않도록 관리하여야 한다.***
+
+<br />
