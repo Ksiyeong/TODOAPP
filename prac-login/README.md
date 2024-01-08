@@ -443,3 +443,56 @@ const db = mariadb.createConnection({
 ### ***‼️`.gitignore`에 해당 환경변수 파일은 깃허브에 업로드되지 않도록 관리하여야 한다.***
 
 <br />
+
+## 13. 로그 관리하기
+
+대표적인 두가지 로그를 간단하게 살펴봅니다.
+
+### ***‼️로그를 저장할 경우 `.gitignore`에 로그관련파일들이 업로드 되지 않도록 주의합시다.***
+
+<br />
+
+### 13-1. morgan
+
+`morgan`은 사용하기 굉장히 쉬운 로그입니다.
+
+<br />
+
+`npm i morgan` 를 통해 해당 모듈을 설치합니다.
+
+로그가 저장될 원하는 위치의 경로를 작성해줍니다.
+
+```javascript
+"use strict";
+// app/src/config/morganLog.js
+const fs = require("fs"); // 파일을 읽고 쓰기위한 모듈
+const appRoot = require("app-root-path"); // 루트 경로를 불러오기 위한 모듈
+
+const accessLogStream = fs.createWriteStream(
+    `${appRoot}/log/morganLog.log`,
+    { flags: 'a' }
+);
+
+module.exports = accessLogStream;
+```
+
+<br />
+
+`app.js`에 아래와 같이 작성해줍니다.
+
+```javascript
+// app.js
+const morgan = require("morgan");
+const accessLogStream = require("./src/config/morganLog");
+
+// app.use(morgan("dev")); // 개발과정에서 콘솔에 로그를 찍어보고싶은 경우
+app.use(morgan("common", { stream: accessLogStream })); // 특정 경로에 로그파일을 생성하고 싶은 경우 두번째 인자로 파일스트립을 추가해줍니다.
+```
+
+`common`, `dev` 외에도 개인적으로 튜닝도 가능하니 모듈 공식문서를 참조합니다.
+
+<br />
+
+### 13-2. winston
+
+<br />

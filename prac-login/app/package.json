@@ -14,10 +14,12 @@
   "author": "Ksiyeong",
   "license": "ISC",
   "dependencies": {
+    "app-root-path": "^3.1.0",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
-    "mariadb": "^3.2.3"
+    "mariadb": "^3.2.3",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
