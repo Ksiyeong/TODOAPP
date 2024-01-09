@@ -4,7 +4,7 @@
 const express = require("express");
 const dotenv = require("dotenv"); dotenv.config();
 const bodyParser = require("body-parser");
-// const morgan = require("morgan");
+const morgan = require("morgan");
 // const accessLogStream = require("./src/config/morgan-logger");
 const logger = require("./src/config/winston-logger");
 const app = express();
@@ -21,6 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // URL을 통해 전달되�
 // 로그
 // app.use(morgan("dev"));
 // app.use(morgan("common", { stream: accessLogStream }));
+app.use(morgan("tiny", { stream: logger.stream })); // winston과 morgan을 함께 사용하기 위한 방법
 
 app.use("/", home); // use -> 미들 웨어를 등록해주는 메서드
 

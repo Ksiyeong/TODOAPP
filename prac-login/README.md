@@ -575,3 +575,29 @@ app.listen(PORT, () => {
 ```
 
 <br />
+
+### 13-3. `morgan`과 `winston`을 함께 사용하기
+
+`morgan`과 `winston`을 함께 사용하는 방법이다.
+
+`morgan`으로부터 로그메세지를 받아서, `winston`이 출력해주는 형식이다.
+
+```javascript
+// app/src/config/winston-logger.js
+
+// winston과 morgan을 합쳐서 사용하기 위한 키
+logger.stream = {
+    write: (message) => logger.info(message),
+};
+```
+
+```javascript
+// app.js
+app.use(morgan("tiny", { stream: logger.stream })); // winston과 morgan을 함께 사용하기 위한 방법
+```
+
+<br />
+
+## 14.
+
+<br />
