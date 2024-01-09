@@ -47,8 +47,8 @@ if (process.env.NODE_ENV !== "prod") {
 }
 
 // winston과 morgan을 합쳐서 사용하기 위한 키
-logger.stream = {
-    write: (message) => logger.info(message),
-};
+// logger.stream = {
+//     write: (message) => logger.info(message),
+// };
 
 module.exports = logger;
