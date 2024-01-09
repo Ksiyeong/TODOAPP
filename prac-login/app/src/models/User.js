@@ -17,8 +17,8 @@ class User {
             } else {
                 return { success: true, msg: "로그인 성공" };
             }
-        } catch (error) {
-            return { success: false, msg: error };
+        } catch (err) {
+            return { success: false, err };
         }
     }
 
@@ -26,7 +26,7 @@ class User {
         try {
             return await UserStorage.save(this.body);
         } catch (err) {
-            return { success: false, msg: err };
+            return { success: false, err };
         }
     }
 }

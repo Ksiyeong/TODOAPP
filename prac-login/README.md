@@ -495,4 +495,83 @@ app.use(morgan("common", { stream: accessLogStream })); // 특정 경로에 로�
 
 ### 13-2. winston
 
+`node.js`에서 가장 널리 사용되는 로그 모듈입니다.
+
+<br />
+
+기본적인 셋팅
+
+`npm i winston`을 통해 모듈을 설치합니다.
+
+기본적인 로그 커스텀에 대한 간략한 예시 코드
+
+```javascript
+// `app/src/config/logger.js`
+"use strict";
+
+const { createLogger, transports, format } = require("winston");
+const { combine, timestamp, printf, label, colorize, simple } = format;
+
+// 로그 출력 형식에 대한 커스텀 1
+const printFormat = printf(({ timestamp, label, level, message }) => {
+    return `${timestamp} [${label}] ${level} : ${message}`;
+});
+
+// 로그 출력 형식에 대한 커스텀 2
+const printLogFormat = {
+    file: combine(
+        label({
+            label: "백엔드 맛보기",
+        }),
+        timestamp({
+            format: "YYYY-MM-DD HH:mm:ss",
+        }),
+        printFormat
+    ),
+
+    console: combine(
+        colorize(),
+        simple(),
+    )
+};
+
+// 로그 레벨 및 파일 또는 콘솔 출력에 대한 형식 커스텀
+const opts = {
+    file: new transports.File({
+        filename: "winston-log.log", // access.log
+        dirname: "./log",
+        level: "http",
+        format: printLogFormat.file,
+    }),
+    console: new transports.Console({
+        level: "http",
+        format: printLogFormat.console,
+    }),
+};
+
+// 위 내용을 종합하여 내보낼 모듈
+const logger = createLogger({
+    transports: [opts.file],
+});
+
+// 개발용 서버일 경우 콘솔에 로그를 찍도록 추가
+if (process.env.NODE_ENV !== "prod") {
+    logger.add(opts.console);
+}
+
+module.exports = logger;
+```
+
+<br />
+
+로그 출력을 사용할 위치 해당 모듈을 불러와 출력합니다.
+
+```javascript
+const logger = require("../src/config/winston-logger") // 모듈 불러오기
+
+app.listen(PORT, () => {
+    logger.info(`${PORT}번 포트에서 서버 가동 중!`); // 로그 사용
+});
+```
+
 <br />

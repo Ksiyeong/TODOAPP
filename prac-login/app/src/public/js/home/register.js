@@ -40,6 +40,9 @@ function register() {
             if (res.success) {
                 location.href = "/login";
             } else {
+                if (res.err) {
+                    return alert(res.err); // 실제로는 에러 내용이 클라이언트에 출력되서는 안됨
+                }
                 alert(res.msg);
             }
         })
