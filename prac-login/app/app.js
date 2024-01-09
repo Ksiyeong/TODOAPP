@@ -2,13 +2,13 @@
 
 // 모듈
 const express = require("express");
+const dotenv = require("dotenv"); dotenv.config();
 const bodyParser = require("body-parser");
-const dotenv = require("dotenv");
 const morgan = require("morgan");
-const accessLogStream = require("./src/config/morganLog");
+const accessLogStream = require("./src/config/morgan-logger");
+// const logger = require("./src/config/loggger");
 const app = express();
 
-dotenv.config();
 
 // 라우팅
 const home = require("./src/routes/home");
@@ -22,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // URL을 통해 전달되�
 // 로그
 app.use(morgan("dev"));
 app.use(morgan("common", { stream: accessLogStream }));
+// logger.info("Hello 구독자님들.");
 
 app.use("/", home); // use -> 미들 웨어를 등록해주는 메서드
 
