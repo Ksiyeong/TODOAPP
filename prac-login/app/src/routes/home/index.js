@@ -12,6 +12,7 @@ router.get("/register", ctrl.output.register);
 
 // 백엔드
 router.post("/login", ctrl.process.login);
+
 router.post("/users", ctrl.process.register);
 router.delete("/users", ctrl.process.deleteUser);
 
