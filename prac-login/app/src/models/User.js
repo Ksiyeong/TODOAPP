@@ -9,14 +9,15 @@ class User {
 
     async login() {
         try {
-            const user = await UserStorage.getUserInfo(this.body.id);
-            if (!user) {
-                return { success: false, msg: "존재하지 않는 아이디" };
-            } else if (user.user_password !== this.body.password) {
-                return { success: false, msg: "잘못된 비밀번호" };
-            } else {
-                return { success: true, msg: "로그인 성공" };
+            const user = await this.#findVerifiedUserById();
+            if (user.id) {
+                if (user.user_password === this.body.password) {
+                    return { success: true, msg: "로그인 성공" };
+                } else {
+                    return { success: false, msg: "잘못된 비밀번호" };
+                }
             }
+            return user;
         } catch (err) {
             return { success: false, err };
         }
@@ -37,11 +38,14 @@ class User {
 
     async deleteUser() {
         try {
-            const user = await UserStorage.getUserInfo(this.body.id);
-            if (user) {
+            const user = await this.#findVerifiedUserById();
+            if (user.id) {
+                if (user.user_password !== this.body.password) {
+                    return { success: false, msg: "잘못된 비밀번호" };
+                }
                 return await UserStorage.deleteUserById(this.body.id);
             } else {
-                return { success: false, msg: "존재하지 않는 사용자입니다." };
+                return user;
             }
         } catch (err) {
             return { success: false, err };
@@ -50,8 +54,8 @@ class User {
 
     async updateUserById() {
         try {
-            const user = await UserStorage.getUserInfo(this.body.id);
-            if (user) {
+            const user = await this.#findVerifiedUserById();
+            if (user.id) {
                 if (user.user_password !== this.body.password) {
                     return { success: false, msg: "잘못된 비밀번호" };
                 }
@@ -59,8 +63,20 @@ class User {
                 const newPassword = this.body.new_password ? this.body.new_password : user.user_password;
                 return await UserStorage.updateUserById(this.body.id, newName, newPassword);
             } else {
+                return user;
+            }
+        } catch (err) {
+            return { success: false, err };
+        }
+    }
+
+    async #findVerifiedUserById() {
+        try {
+            const user = await UserStorage.getUserInfo(this.body.id);
+            if (!user) {
                 return { success: false, msg: "존재하지 않는 사용자입니다." };
             }
+            return user;
         } catch (err) {
             return { success: false, err };
         }
