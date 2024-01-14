@@ -28,7 +28,7 @@ function register() {
         password: password.value,
     };
 
-    fetch("/register", {
+    fetch("/users", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
