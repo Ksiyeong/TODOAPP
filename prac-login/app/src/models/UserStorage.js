@@ -22,6 +22,16 @@ class UserStorage {
             });
         });
     }
+
+    static async deleteUserById(id) {
+        return new Promise((resolve, reject) => {
+            const query = "DELETE FROM users WHERE id = ?";
+            db.query(query, [id], (err, data) => {
+                if (err) reject(`${err}`);
+                else resolve({ success: true, msg: "회원탈퇴가 완료되었습니다." });
+            });
+        });
+    }
 }
 
 module.exports = UserStorage;
