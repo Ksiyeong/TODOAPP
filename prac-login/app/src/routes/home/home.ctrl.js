@@ -56,6 +56,18 @@ const process = {
         log(response, url);
         return res.json(response);
     },
+
+    patchUser: async (req, res) => {
+        const user = new User(req.body);
+        const response = await user.updateUserById();
+        const url = {
+            method: req.method,
+            path: req.path,
+            status: response.err ? 500 : 200,
+        };
+        log(response, url);
+        return res.json(response);
+    },
 };
 
 module.exports = {

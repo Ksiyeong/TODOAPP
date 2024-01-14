@@ -32,6 +32,16 @@ class UserStorage {
             });
         });
     }
+
+    static async updateUserById(id, newName, newPassword) {
+        return new Promise((resolve, reject) => {
+            const query = "UPDATE users SET name = ?, user_password = ? WHERE id = ?";
+            db.query(query, [newName, newPassword, id], (err, data) => {
+                if (err) reject(`${err}`);
+                else resolve({ success: true, msg: "회원정보 수정이 완료되었습니다." });
+            });
+        });
+    }
 }
 
 module.exports = UserStorage;

@@ -15,5 +15,6 @@ router.post("/login", ctrl.process.login);
 
 router.post("/users", ctrl.process.register);
 router.delete("/users", ctrl.process.deleteUser);
+router.patch("/users", ctrl.process.patchUser);
 
 module.exports = router;
