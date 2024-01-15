@@ -12,7 +12,11 @@ class User {
             const user = await this.#findVerifiedUserById();
             if (user.id) {
                 if (user.user_password === this.body.password) {
-                    return { success: true, msg: "로그인 성공" };
+                    const userInfo = {
+                        id: user.id,
+                        name: user.name,
+                    };
+                    return { success: true, msg: "로그인 성공", userInfo };
                 } else {
                     return { success: false, msg: "잘못된 비밀번호" };
                 }
