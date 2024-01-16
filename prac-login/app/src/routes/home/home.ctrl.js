@@ -2,6 +2,7 @@
 
 const logger = require("../../config/winston-logger");
 const User = require("../../models/User");
+const jwtUtils = require("../../middlewares/jwt/jwtUtils");
 
 const output = {
     home: (req, res) => {
@@ -24,6 +25,12 @@ const process = {
     login: async (req, res) => {
         const user = new User(req.body);
         const response = await user.login();
+
+        if (response.success) {
+            response.userInfo.accessToken = jwtUtils.generateAccessToken(response.userInfo.id);
+            response.userInfo.refreshToken = jwtUtils.generateRefreshToken(response.userInfo.id);
+        }
+
         const url = {
             method: req.method,
             path: req.path,
