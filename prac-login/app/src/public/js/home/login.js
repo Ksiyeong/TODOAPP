@@ -30,7 +30,7 @@ function login() {
     })
         .then((res) => res.json())
         .then((res) => {
-            if (res.status == 200) {
+            if (res.success) {
                 localStorage.setItem('userInfo', JSON.stringify(res.userInfo));
                 location.href = "/";
             } else {
