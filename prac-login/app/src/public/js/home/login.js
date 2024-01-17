@@ -30,17 +30,14 @@ function login() {
     })
         .then((res) => res.json())
         .then((res) => {
-            if (res.success) {
+            if (res.status == 200) {
                 localStorage.setItem('userInfo', JSON.stringify(res.userInfo));
                 location.href = "/";
             } else {
-                if (res.err) {
-                    return alert(res.err); // 실제로는 에러 내용이 클라이언트에 출력되서는 안됨
-                }
-                alert(res.msg);
+                alert(res.message);
             }
         })
         .catch((err) => {
-            console.log(new Error("로그인 중 에러 발생"));
+            alert(new Error("Internal Server Error"));
         });
 }
