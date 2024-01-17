@@ -5,7 +5,6 @@ const logger = require('../../config/winston-logger');
 
 const errorHandler = (err, req, res, next) => {
     if (err instanceof CustomError) {
-        console.log(err.message);
         logger.debug(`${req.method} ${req.path} ${err.status} ${err.code} Response "error : ${err.name}, message : ${err.message}"`);
         res.status(err.status).json(err.toJSON());
     } else {
