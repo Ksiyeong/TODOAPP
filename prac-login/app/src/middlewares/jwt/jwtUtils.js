@@ -22,7 +22,7 @@ function generateAccessToken(id) {
 function verifyAccessToken(accessToken) {
     try {
         return jwt.verify(accessToken, JWT_ACCESS_SECRET);
-
+        
     } catch (error) {
         if (error.name === "TokenExpiredError") {
             return { success: false, status: 419, msg: "만료된 토큰입니다." };

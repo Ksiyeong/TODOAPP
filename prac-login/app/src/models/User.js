@@ -45,14 +45,14 @@ class User {
             const user = await this.#findVerifiedUserById();
             if (user.id) {
                 if (user.user_password !== this.body.password) {
-                    return { success: false, msg: "잘못된 비밀번호" };
+                    return { success: false, status: 401, msg: "잘못된 비밀번호" };
                 }
                 return await UserStorage.deleteUserById(this.body.id);
             } else {
                 return user;
             }
         } catch (err) {
-            return { success: false, err };
+            return { success: false, status: 500, err };
         }
     }
 
@@ -78,7 +78,7 @@ class User {
         try {
             const user = await UserStorage.getUserInfo(this.body.id);
             if (!user) {
-                return { success: false, msg: "존재하지 않는 사용자입니다." };
+                return { success: false, status: 404, msg: "존재하지 않는 사용자입니다." };
             }
             return user;
         } catch (err) {
