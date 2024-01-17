@@ -28,11 +28,11 @@ const opts = {
     file: new transports.File({
         filename: "winston-log.log", // access.log
         dirname: "./log",
-        level: "http",
+        level: "info",
         format: printLogFormat.file,
     }),
     console: new transports.Console({
-        level: "http",
+        level: "debug",
         format: printLogFormat.console,
     }),
 };
