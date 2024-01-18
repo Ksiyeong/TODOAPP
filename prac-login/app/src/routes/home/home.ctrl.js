@@ -41,13 +41,7 @@ const process = {
                 response.userInfo.accessToken = jwtUtils.generateAccessToken(response.userInfo.id);
                 response.userInfo.refreshToken = jwtUtils.generateRefreshToken(response.userInfo.id);
             }
-
-            const url = {
-                method: req.method,
-                path: req.path,
-                status: 200,
-            };
-            res.status(url.status).json(response);
+            res.status(200).json(response);
             next();
         } catch (error) {
             next(error);
@@ -58,11 +52,6 @@ const process = {
         try {
             const user = new User(req.body);
             const response = await user.register();
-            const url = {
-                method: req.method,
-                path: req.path,
-                status: response.err ? 500 : 201,
-            };
             res.status(201).json(response);
             next();
         } catch (error) {
@@ -74,11 +63,6 @@ const process = {
         try {
             const user = new User(req.body);
             const response = await user.deleteUser();
-            const url = {
-                method: req.method,
-                path: req.path,
-                status: response.err ? 500 : 204,
-            };
             res.status(204).json(response);
             next();
         } catch (error) {
@@ -90,11 +74,6 @@ const process = {
         try {
             const user = new User(req.body);
             const response = await user.updateUserById();
-            const url = {
-                method: req.method,
-                path: req.path,
-                status: response.err ? 500 : 200,
-            };
             res.json(response);
             next();
         } catch (error) {
