@@ -15,7 +15,7 @@ class User {
                 id: user.id,
                 name: user.name,
             };
-            return { success: true, msg: "로그인 성공", userInfo };
+            return { success: true, message: "로그인 성공", userInfo };
         } else {
             throw new CustomError("Unauthorized", 401, "U401", "잘못된 비밀번호 입니다.");
         }
