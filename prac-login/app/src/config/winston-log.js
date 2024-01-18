@@ -3,7 +3,6 @@
 const { createLogger, transports, format } = require("winston");
 const { combine, timestamp, printf, label, colorize, simple } = format;
 
-// TODO 미들웨어 등록해서 사용해보도록 하자
 const printFormat = printf(({ timestamp, label, level, message }) => {
     return `${timestamp} [${label}] ${level} : ${message}`;
 });
