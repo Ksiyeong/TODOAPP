@@ -1,6 +1,7 @@
 "use strict";
 
 const UserStorage = require("./UserStorage");
+const CustomError = require('../middlewares/error/CustomError');
 
 class User {
     constructor(body) {
@@ -8,82 +9,51 @@ class User {
     }
 
     async login() {
-        try {
-            const user = await this.#findVerifiedUserById();
-            if (user.id) {
-                if (user.user_password === this.body.password) {
-                    const userInfo = {
-                        id: user.id,
-                        name: user.name,
-                    };
-                    return { success: true, msg: "로그인 성공", userInfo };
-                } else {
-                    return { success: false, msg: "잘못된 비밀번호" };
-                }
-            }
-            return user;
-        } catch (err) {
-            return { success: false, err };
+        const user = await this.#findVerifiedUserById();
+        if (user.user_password === this.body.password) {
+            const userInfo = {
+                id: user.id,
+                name: user.name,
+            };
+            return { success: true, msg: "로그인 성공", userInfo };
+        } else {
+            throw new CustomError("Unauthorized", 401, "U401", "잘못된 비밀번호 입니다.");
         }
     }
 
     async register() {
-        try {
-            const user = await UserStorage.getUserInfo(this.body.id);
-            if (user) {
-                return { success: false, msg: "이미 사용중인 아이디입니다." };
-            } else {
-                return await UserStorage.save(this.body);
-            }
-        } catch (err) {
-            return { success: false, err };
+        const user = await UserStorage.getUserInfo(this.body.id);
+        if (user) {
+            throw new CustomError("Conflict", 409, "U409", "이미 사용중인 아이디 입니다.");
         }
+        return await UserStorage.save(this.body);
     }
 
     async deleteUser() {
-        try {
-            const user = await this.#findVerifiedUserById();
-            if (user.id) {
-                if (user.user_password !== this.body.password) {
-                    return { success: false, status: 401, msg: "잘못된 비밀번호" };
-                }
-                return await UserStorage.deleteUserById(this.body.id);
-            } else {
-                return user;
-            }
-        } catch (err) {
-            return { success: false, status: 500, err };
+        const { id, user_password: password } = await this.#findVerifiedUserById();
+        if (this.body.id === id && this.body.password === password) {
+            return await UserStorage.deleteUserById(id);
+        } else {
+            throw new CustomError("Unauthorized", 401, "U401", "잘못된 비밀번호 입니다.");
         }
     }
 
     async updateUserById() {
-        try {
-            const user = await this.#findVerifiedUserById();
-            if (user.id) {
-                if (user.user_password !== this.body.password) {
-                    return { success: false, msg: "잘못된 비밀번호" };
-                }
-                const newName = this.body.name ? this.body.name : user.name;
-                const newPassword = this.body.new_password ? this.body.new_password : user.user_password;
-                return await UserStorage.updateUserById(this.body.id, newName, newPassword);
-            } else {
-                return user;
-            }
-        } catch (err) {
-            return { success: false, err };
+        const { name, user_password: password } = await this.#findVerifiedUserById();
+        if (password !== this.body.password) {
+            throw new CustomError("Unauthorized", 401, "U401", "잘못된 비밀번호 입니다.");
         }
+        const newName = this.body.name ? this.body.name : name;
+        const newPassword = this.body.new_password ? this.body.new_password : password;
+        return await UserStorage.updateUserById(this.body.id, newName, newPassword);
     }
 
     async #findVerifiedUserById() {
-        try {
-            const user = await UserStorage.getUserInfo(this.body.id);
-            if (!user) {
-                return { success: false, status: 404, msg: "존재하지 않는 사용자입니다." };
-            }
-            return user;
-        } catch (err) {
-            return { success: false, err };
+        const user = await UserStorage.getUserInfo(this.body.id);
+        if (!user) {
+            throw new CustomError("UserNotFound", 404, "UNF404", "요청하신 사용자를 찾을 수 없습니다.");
         }
+        return user;
     }
 }
 
