@@ -1,7 +1,7 @@
 "use strict";
 
 const app = require("../app");
-const logger = require("../src/config/winston-logger")
+const logger = require("../src/config/winston-log")
 
 const PORT = process.env.PORT || 3000;
 

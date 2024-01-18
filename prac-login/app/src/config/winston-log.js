@@ -3,6 +3,7 @@
 const { createLogger, transports, format } = require("winston");
 const { combine, timestamp, printf, label, colorize, simple } = format;
 
+// TODO 미들웨어 등록해서 사용해보도록 하자
 const printFormat = printf(({ timestamp, label, level, message }) => {
     return `${timestamp} [${label}] ${level} : ${message}`;
 });
@@ -37,13 +38,13 @@ const opts = {
     }),
 };
 
-const logger = createLogger({
+const log = createLogger({
     transports: [opts.file],
 });
 
 // 개발용 서버일 경우 콘솔에 로그를 찍도록 추가
 if (process.env.NODE_ENV !== "prod") {
-    logger.add(opts.console);
+    log.add(opts.console);
 }
 
 // winston과 morgan을 합쳐서 사용하기 위한 키
@@ -51,4 +52,4 @@ if (process.env.NODE_ENV !== "prod") {
 //     write: (message) => logger.info(message),
 // };
 
-module.exports = logger;
+module.exports = log;
