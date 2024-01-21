@@ -4,14 +4,7 @@ const userRepository = require("./user.repository");
 
 module.exports = {
     createUser: (user) => {
-        try {
-            const response = userRepository.save(user);
-            console.log(response);
-
-        } catch (error) {
-            console.log(error);
-        }
-
+        userRepository.save(user);
         return user;
     },
 
