@@ -1,8 +1,9 @@
 "use strict";
 
+const { Router } = require('express');
 const { getPosts } = require('./post.controller');
 
-const posts = require('express').Router();
+const posts = Router();
 
 posts.get('/', getPosts);
 
