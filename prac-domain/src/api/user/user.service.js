@@ -5,7 +5,7 @@ const userRepository = require("./user.repository");
 
 module.exports = {
     createUser: async (user) => {
-        // 사용중인 이메일인지 검증
+        // 이메일 검증 로직
         const verifiedUser = await userRepository.findByEmail(user.email)
         if (verifiedUser) {
             throw new CustomError('Conflict', 409, 'U409', '이미 사용중인 이메일 입니다.');
