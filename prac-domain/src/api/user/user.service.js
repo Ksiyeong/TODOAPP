@@ -1,7 +1,7 @@
 "use strict";
 
-const CustomError = require("../../utils/CustomError");
-const userRepository = require("./user.repository");
+const CustomError = require('../../utils/CustomError');
+const userRepository = require('./user.repository');
 
 module.exports = {
     createUser: async (user) => {
