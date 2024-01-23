@@ -13,9 +13,9 @@ const findVerifiedUserByEmail = async (email) => {
 module.exports = {
     // 유저 생성
     createUser: async (user) => {
-        // 이메일 검증 로직
-        const verifiedUser = await userRepository.findByEmail(user.email)
-        if (verifiedUser) {
+        // 이메일 중복 검증 로직
+        const userCount = await userRepository.existsByEmail(user.email);
+        if (userCount > 0) {
             throw new CustomError('CONFLICT', 409, 'U409', '이미 사용중인 이메일 입니다.');
         }
 
