@@ -18,7 +18,10 @@ module.exports = {
             const query = 'INSERT INTO users(email, name, password) VALUES(?, ?, ?);';
             db.query(query, [user.email, user.name, user.password], (error, data) => {
                 if (error) reject(`${error}`);
-                else resolve(data[0]);
+                else resolve({
+                    affectedRows: data.affectedRows, // int
+                    userId: data.insertId // Bigint
+                });
             });
         });
     }
