@@ -20,8 +20,12 @@ module.exports = {
     },
 
     getUser: async (req, res, next) => {
-        const user = await userService.findUser(req.params.email);
-        res.status(200).json(user);
-        next();
+        try {
+            const user = await userService.findUser(req.params.email);
+            res.status(200).json(user);
+            next();
+        } catch (error) {
+            next(error);
+        }
     }
 };
