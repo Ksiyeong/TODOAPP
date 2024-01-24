@@ -10,7 +10,7 @@ const logger = (req, res) => {
             log.debug(`${req.method} ${req.path} ${err.status} ${err.code} ${err}`);
 
         } else { // 500번 이상 응답
-            log.error(`${req.method} ${req.path} 500`, err);
+            log.error(`${req.method} ${req.path} 500`, { error: err, stack: err.stack });
         }
 
     } else { // 400번 미만 응답 (정상 응답)

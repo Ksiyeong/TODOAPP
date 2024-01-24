@@ -9,18 +9,15 @@ const printLogFormat = {
         timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
         label({ label: 'prac_domain' }),
         ms(),
-        printf(({ timestamp, label, level, message, ms, stack }) => {
-            return `${timestamp} [${label}] ${level}: ${message} ${ms}\n${stack}`;
-        })
+        printf(({ timestamp, label, level, message, ms, error, stack }) => `${timestamp} [${label}] ${level}: ${message} ${ms}\n${stack || error}`)
     ),
 
     console: combine(
         colorize(),
         ms(),
-        printf(({ level, message, ms, stack }) => {
-            return stack
-                ? `${level}: ${message} ${ms}\n${stack}`
-                : `${level}: ${message} ${ms}`;
+        printf(({ level, message, ms, error, stack }) => {
+            if (stack || error) return `${level}: ${message} ${ms}\n${stack || error}`;
+            else return `${level}: ${message} ${ms}`;
         }),
     )
 };
