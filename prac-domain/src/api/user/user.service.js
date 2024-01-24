@@ -31,7 +31,15 @@ module.exports = {
     },
 
     // 유저 업데이트
-    updateUser: () => {
-
+    updateUser: async (user) => {
+        const findUser = await findVerifiedUserByEmail(user.email);
+        if (user.name) findUser.name = user.name;
+        if (user.password) findUser.password = user.password;
+        await userRepository.update(findUser);
+        return {
+            email: findUser.email,
+            name: findUser.name,
+            // password: findUser.password,
+        };
     },
 };
