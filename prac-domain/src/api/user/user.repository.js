@@ -34,5 +34,15 @@ module.exports = {
                 });
             });
         });
+    },
+
+    update: (user) => {
+        return new Promise((resolve, reject) => {
+            const query = 'UPDATE users SET name = ?, password = ? WHERE email = ?'
+            db.query(query, [user.name, user.password, user.email], (error, data) => {
+                if (error) reject(`${error}`);
+                else resolve(data.affectedRows); // int
+            });
+        });
     }
 };
