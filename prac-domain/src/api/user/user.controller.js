@@ -1,8 +1,33 @@
 "use strict";
 
+const jwtUtils = require('../../utils/jwtUtils');
 const userService = require('./user.service');
 
 module.exports = {
+    login: async (req, res, next) => {
+        try {
+            const { email, password } = req.body;
+
+            // email과 password 매칭여부 확인
+            const user = await userService.login(email, password);
+
+            // 토큰 발급
+            const accessToken = jwtUtils.generateAccessToken(email);
+            const refreshToken = jwtUtils.generateRefreshToken(email);
+
+            // 응답
+            res.status(200).json({
+                email: user.email,
+                name: user.name,
+                accessToken,
+                refreshToken,
+            });
+            next();
+        } catch (error) {
+            next(error);
+        }
+    },
+
     postUser: async (req, res, next) => {
         try {
             const { email, name, password } = req.body;
