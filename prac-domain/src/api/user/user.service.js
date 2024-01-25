@@ -11,6 +11,12 @@ const findVerifiedUserByEmail = async (email) => {
 };
 
 module.exports = {
+    login: async (email, password) => { //TODO auth로 뺄까??
+        const user = await findVerifiedUserByEmail(email);
+        if (password === user.password) return user;
+        else throw new CustomError('Unauthorized', 401, 'U401', '잘못된 비밀번호 입니다.');
+    },
+
     // 유저 생성
     createUser: async (user) => {
         // 이메일 중복 검증 로직
