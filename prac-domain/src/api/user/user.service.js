@@ -39,8 +39,13 @@ module.exports = {
     // 유저 업데이트
     updateUser: async (user) => {
         const findUser = await findVerifiedUserByEmail(user.email);
+        if (user.password !== findUser.password) {
+            throw new CustomError('Unauthorized', 401, 'U401', '잘못된 비밀번호 입니다.');
+        }
+
         if (user.name) findUser.name = user.name;
-        if (user.password) findUser.password = user.password;
+        if (user.newPassword) findUser.password = user.newPassword;
+
         await userRepository.update(findUser);
         return {
             email: findUser.email,
