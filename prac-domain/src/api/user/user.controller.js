@@ -64,4 +64,15 @@ module.exports = {
             next(error);
         }
     },
+
+    deleteUser: async (req, res, next) => {
+        try {
+
+
+            res.status(204);
+            next();
+        } catch (error) {
+            next(error);
+        }
+    },
 };
