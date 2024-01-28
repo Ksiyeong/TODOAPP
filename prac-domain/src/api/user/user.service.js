@@ -53,4 +53,14 @@ module.exports = {
             // password: findUser.password,
         };
     },
+
+    // 특정 유저 삭제
+    deleteUser: async (user) => {
+        const findUser = await findVerifiedUserByEmail(user.email);
+        if (user.password !== findUser.password) {
+            throw new CustomError('Unauthorized', 401, 'U401', '잘못된 비밀번호 입니다.');
+        }
+
+        return await userRepository.delete(findUser.email) === 1;
+    },
 };
