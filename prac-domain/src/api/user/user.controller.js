@@ -3,7 +3,7 @@
 const jwtUtils = require('../../utils/jwtUtils');
 const userService = require('./user.service');
 
-module.exports = {
+module.exports = {//TODO 패스워드 암호화 할것.
     login: async (req, res, next) => {
         try {
             const { email, password } = req.body;
@@ -67,9 +67,12 @@ module.exports = {
 
     deleteUser: async (req, res, next) => {
         try {
+            await userService.deleteUser({
+                email: req.params.email,
+                password: req.body.password
+            });
 
-
-            res.status(204);
+            res.status(204).end();
             next();
         } catch (error) {
             next(error);
