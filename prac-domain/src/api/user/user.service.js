@@ -1,5 +1,6 @@
 "use strict";
 
+const bcrypt = require('bcrypt');
 const CustomError = require('../../utils/CustomError');
 const userRepository = require('./user.repository');
 
@@ -10,11 +11,20 @@ const findVerifiedUserByEmail = async (email) => {
     else return user;
 };
 
+const encryptPassword = async (password) => {
+    return await bcrypt.hash(password, 10);
+};
+
+const comparePassword = async (password, hashedPassword) => {
+    const result = await bcrypt.compare(password, hashedPassword);
+    if (!result) throw new CustomError('Unauthorized', 401, 'U401', '잘못된 비밀번호 입니다.');
+};
+
 module.exports = {
     login: async (email, password) => { //TODO auth로 뺄까??
         const user = await findVerifiedUserByEmail(email);
-        if (password === user.password) return user;
-        else throw new CustomError('Unauthorized', 401, 'U401', '잘못된 비밀번호 입니다.');
+        await comparePassword(password, user.password);
+        return user;
     },
 
     // 유저 생성
@@ -26,25 +36,33 @@ module.exports = {
         }
 
         // 미사용중인 이메일일 경우 유저 생성
+        user.password = await encryptPassword(user.password);
         const result = await userRepository.save(user); // { affectedRows : int, userId: Bigint }
-        return result;
+        return {
+            email: user.email,
+            name: user.name
+        };
     },
 
     // 유저 단건 조회
     findUser: async (email) => {
-        const user = await findVerifiedUserByEmail(email);
-        return user;
+        const { user_id, /*email,*/ name, created_at, modified_at } = await findVerifiedUserByEmail(email);
+        return {
+            userId: user_id,
+            email,
+            name,
+            createdAt: created_at,
+            modifiedAt: modified_at
+        };
     },
 
     // 유저 업데이트
     updateUser: async (user) => {
         const findUser = await findVerifiedUserByEmail(user.email);
-        if (user.password !== findUser.password) {
-            throw new CustomError('Unauthorized', 401, 'U401', '잘못된 비밀번호 입니다.');
-        }
+        await comparePassword(user.password, findUser.password);
 
         if (user.name) findUser.name = user.name;
-        if (user.newPassword) findUser.password = user.newPassword;
+        if (user.newPassword) findUser.password = await encryptPassword(user.newPassword);
 
         await userRepository.update(findUser);
         return {
@@ -57,9 +75,7 @@ module.exports = {
     // 특정 유저 삭제
     deleteUser: async (user) => {
         const findUser = await findVerifiedUserByEmail(user.email);
-        if (user.password !== findUser.password) {
-            throw new CustomError('Unauthorized', 401, 'U401', '잘못된 비밀번호 입니다.');
-        }
+        await comparePassword(user.password, findUser.password);
 
         return await userRepository.delete(findUser.email) === 1;
     },
