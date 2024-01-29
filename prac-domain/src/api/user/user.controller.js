@@ -3,7 +3,7 @@
 const jwtUtils = require('../../utils/jwtUtils');
 const userService = require('./user.service');
 
-module.exports = {//TODO 패스워드 암호화 할것.
+module.exports = {
     login: async (req, res, next) => {
         try {
             const { email, password } = req.body;
@@ -36,8 +36,8 @@ module.exports = {//TODO 패스워드 암호화 할것.
                 name: name,
                 password: password
             }
-            await userService.createUser(user);
-            res.status(201).json(user);
+            const createdUser = await userService.createUser(user);
+            res.status(201).json(createdUser);
             next();
         } catch (error) {
             next(error);
