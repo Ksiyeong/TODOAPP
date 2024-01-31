@@ -10,7 +10,7 @@ const JWT_REFRESH_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN;
 const JWT_ISSUER = process.env.JWT_ISSUER;
 
 const extractBearerToken = (token) => {
-    if (token.startsWith('Bearer ')) {
+    if (token && token.startsWith('Bearer ')) {
         return token.substring(7);
     } else {
         throw new CustomError('Bad Request', 400, 'JWT400', '토큰 형식이 올바르지 않습니다.');
