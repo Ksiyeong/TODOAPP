@@ -2,14 +2,14 @@
 
 const { Router } = require('express');
 const { getUser, postUser, patchUser, login, deleteUser } = require('./user.controller');
-const matchAccessTokenAndEmail = require('../../middlewares/matchAccessTokenAndEmail');
+const { matchAccessTokenAndEmailByParams } = require('../../middlewares/auth-middleware');
 
 const users = Router();
 
 users.post('/', postUser);
 users.post('/login', login); //TODO auth로 따로 뺄까 ?
-users.get('/:email', matchAccessTokenAndEmail, getUser);
-users.patch('/:email', matchAccessTokenAndEmail, patchUser);
-users.delete('/:email', matchAccessTokenAndEmail, deleteUser);
+users.get('/:email', matchAccessTokenAndEmailByParams, getUser);
+users.patch('/:email', matchAccessTokenAndEmailByParams, patchUser);
+users.delete('/:email', matchAccessTokenAndEmailByParams, deleteUser);
 
 module.exports = users;

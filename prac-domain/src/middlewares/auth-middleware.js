@@ -4,7 +4,7 @@ const CustomError = require('../utils/CustomError');
 const { verifyAccessToken } = require('../utils/jwtUtils');
 
 module.exports = {
-    matchAccessTokenAndEmail: (req, res, next) => {
+    matchAccessTokenAndEmailByParams: (req, res, next) => {
         try {
             const { email } = verifyAccessToken(req.headers['authorization']);
             if (email === req.params.email) next();
