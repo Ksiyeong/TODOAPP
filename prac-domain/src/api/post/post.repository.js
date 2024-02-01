@@ -16,4 +16,17 @@ module.exports = {
         });
     },
 
+    findByPostId: (postId) => {
+        return new Promise((resolve, reject) => {
+            const query = `
+            SELECT p.*, u.email FROM post p 
+            INNER JOIN users u ON u.user_id = p.user_id
+            WHERE p.post_id = ?;
+            `;
+            db.query(query, [postId], (error, data) => {
+                if (error) reject(error);
+                else resolve(data[0]);
+            });
+        });
+    },
 };
