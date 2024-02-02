@@ -29,4 +29,18 @@ module.exports = {
             });
         });
     },
+
+    update: (postId, title, content) => {
+        return new Promise((resolve, reject) => {
+            const query = `
+            UPDATE post
+            SET title = ?, content = ?
+            WHERE post_id = ?;
+            `;
+            db.query(query, [title, content, postId], (error, data) => {
+                if (error) reject(error);
+                else resolve(data);
+            });
+        });
+    }
 };
