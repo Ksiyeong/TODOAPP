@@ -40,7 +40,17 @@ module.exports = {
 
     // 게시글 수정
     patchPost: async (req, res, next) => {
+        try {
+            const postId = req.params.postId;
+            const { email, title, content } = req.body; // requestBody에서 데이터 추출
 
+            await postService.updatePost(postId, email, title, content); // post 수정
+
+            res.status(200).json({ postId });
+            next();
+        } catch (error) {
+            next(error);
+        }
     },
 
     // 게시글 삭제
