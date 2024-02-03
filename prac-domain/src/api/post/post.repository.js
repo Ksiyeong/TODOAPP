@@ -42,5 +42,15 @@ module.exports = {
                 else resolve(data);
             });
         });
-    }
+    },
+
+    delete: (postId) => {
+        return new Promise((resolve, reject) => {
+            const query = 'DELETE FROM post WHERE post_id = ?;'
+            db.query(query, [postId], (error, data) => {
+                if (error) reject(error);
+                else resolve(data);
+            });
+        });
+    },
 };
