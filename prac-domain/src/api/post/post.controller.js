@@ -55,6 +55,14 @@ module.exports = {
 
     // 게시글 삭제
     deletePost: async (req, res, next) => {
-
+        try {
+            const postId = req.params.postId;
+            const email = req.body.email;
+            await postService.deletePost(postId, email);
+            res.status(204).end();
+            next();
+        } catch (error) {
+            next(error);
+        }
     },
 };
