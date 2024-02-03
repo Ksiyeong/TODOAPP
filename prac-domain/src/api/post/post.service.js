@@ -38,4 +38,12 @@ module.exports = {
         await postRepository.update(post.post_id, post.title, post.content);
         return;
     },
+
+    deletePost: async (postId, email) => {
+        const post = await findVerifiedPostByPostId(postId);
+        if (post.email !== email) throw new CustomError('Forbidden', 403, 'P403', '게시글에 대한 접근 권한이 없습니다.');
+        const result = await postRepository.delete(postId);
+        console.log(result);
+        return;
+    },
 };
