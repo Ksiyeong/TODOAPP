@@ -54,15 +54,16 @@ module.exports = {
         });
     },
 
-    search: (param) => {
+    search: (param, limit, offset) => {
         return new Promise((resolve, reject) => {
             const query = `
             SELECT p.*, u.email FROM post p
             INNER JOIN users u ON u.user_id = p.user_id
-            WHERE p.title LIKE ? OR p.content LIKE ?;
+            WHERE p.title LIKE ? OR p.content LIKE ?
+            LIMIT ? OFFSET ?;
             `;
             const searchTerm = `%${param}%`;
-            db.query(query, [searchTerm, searchTerm], (error, data) => {
+            db.query(query, [searchTerm, searchTerm, limit, offset], (error, data) => {
                 if (error) reject(error);
                 else resolve(data);
             });
