@@ -73,13 +73,13 @@ module.exports = {
     getTotalCount: (param) => {
         return new Promise((resolve, reject) => {
             const query = `
-            SELECT COUNT(*) FROM post
+            SELECT COUNT(*) total FROM post
             WHERE title LIKE ? OR content LIKE ?;
             `;
             const searchTerm = `%${param}%`;
             db.query(query, [searchTerm, searchTerm], (error, data) => {
                 if (error) reject(error);
-                else resolve(data);
+                else resolve(data[0].total.toString());
             });
         });
     },
