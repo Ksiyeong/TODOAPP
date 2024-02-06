@@ -33,9 +33,21 @@ module.exports = {
         }
     },
 
-    // 다건 조회
+    // 다건 조회(검색)
     getPosts: async (req, res, next) => {
-        res.status(200).json({ message: 'getPosts' });
+        try {
+            //TODO: 데이터 유효성 검사 해야함
+            const param = req.query.param || '';
+            const size = Number(req.query.size) || 10;
+            const start = Number(req.query.start) || 0;
+
+            const response = await postService.findPosts(param, size, start);
+
+            res.status(200).json(response);
+            next();
+        } catch (error) {
+            next(error);
+        }
     },
 
     // 게시글 수정
