@@ -28,6 +28,12 @@ module.exports = {
         };
     },
 
+    findPosts: async (param, size, start) => {
+        const total = await postRepository.getTotalCount(param);
+        const posts = await postRepository.search(param, size, start);
+        return { total, size, start, posts };
+    },
+
     updatePost: async (postId, email, title, content) => {
         const post = await findVerifiedPostByPostId(postId);
         // 권한 검사
