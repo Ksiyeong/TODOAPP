@@ -79,7 +79,7 @@ module.exports = {
             const searchTerm = `%${param}%`;
             db.query(query, [searchTerm, searchTerm], (error, data) => {
                 if (error) reject(error);
-                else resolve(data[0].total.toString());
+                else resolve(Number(data[0].total));
             });
         });
     },
