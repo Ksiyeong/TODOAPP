@@ -4,7 +4,7 @@
   "description": "도메인 중심 디렉토리 구조 프로젝트 연습",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --forceExit",
     "start": "node ./src/app.js",
     "dev": "nodemon ./src/app.js"
   },
