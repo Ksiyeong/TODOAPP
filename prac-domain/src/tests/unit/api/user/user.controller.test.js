@@ -4,6 +4,8 @@ const request = require('supertest');
 const app = require('../../../../app');
 const userService = require('../../../../api/user/user.service');
 const CustomError = require('../../../../utils/CustomError');
+const jwtUtils = require('../../../../utils/jwtUtils');
+const userController = require('../../../../api/user/user.controller');
 
 describe('POST /users', () => {
     it('회원가입 성공', async () => {
@@ -119,4 +121,65 @@ describe('POST /users', () => {
         expect(res.status).toBe(400);
     });
 
+});
+
+describe('POST /users/login', () => {
+    let req, res, next;
+
+    beforeEach(() => {
+        req = {
+            body: {
+                email: 'test@test.com',
+                password: '1234'
+            }
+        };
+        res = {
+            status: jest.fn(() => res),
+            json: jest.fn()
+        };
+        next = jest.fn();
+    });
+
+    it('로그인 성공하여 정상응답', async () => {
+        // given
+        const user = {
+            email: req.body.email,
+            name: '테스트'
+        };
+
+        const accessToken = 'Bearer accessToken';
+        const refreshToken = 'Bearer refreshToken';
+
+        const expected = {
+            email: user.email,
+            name: user.name,
+            accessToken,
+            refreshToken
+        };
+
+        userService.login = jest.fn().mockResolvedValue(user);
+        jwtUtils.generateAccessToken = jest.fn().mockReturnValue(accessToken);
+        jwtUtils.generateRefreshToken = jest.fn().mockReturnValue(refreshToken);
+
+
+        // when
+        await userController.login(req, res, next);
+
+        // then
+        expect(res.status).toBeCalledWith(200);
+        expect(res.json).toBeCalledWith(expected);
+    });
+
+    it('로그인중 에러발생하여 에러핸들러로 넘김', async () => {
+        // given
+        const error = new Error('에러발생');
+        userService.login = jest.fn().mockRejectedValue(error);
+
+        // when
+        await userController.login(req, res, next);
+
+        // then
+        expect(userService.login).toBeCalledWith(req.body.email, req.body.password);
+        expect(next).toBeCalledWith(error);
+    });
 });
