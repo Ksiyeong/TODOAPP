@@ -15,7 +15,7 @@ module.exports = {
 
     existsByEmail: (email) => {
         return new Promise((resolve, reject) => {
-            const query = 'SELECT EXISTS (SELECT 1 FROM users WHERE email = ?) AS count';
+            const query = 'SELECT EXISTS (SELECT 1 FROM users WHERE email = ?) AS count;';
             db.query(query, [email], (error, data) => {
                 if (error) reject(error);
                 else resolve(data[0].count); // number
