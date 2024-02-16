@@ -3,12 +3,12 @@
 const { db } = require("../../config/database");
 
 module.exports = {
-    countByName: (name) => {
+    existsByName: (name) => {
         return new Promise((resolve, reject) => {
-            const query = 'SELECT COUNT(*) count FROM category WHERE name = ?';
+            const query = 'SELECT EXISTS (SELECT 1 FROM category WHERE name = ?) AS count';
             db.query(query, [name], (error, data) => {
                 if (error) reject(error);
-                else resolve(data[0].count); // Bigint
+                else resolve(data[0].count); // number
             });
         });
     },

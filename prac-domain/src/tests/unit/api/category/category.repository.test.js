@@ -3,20 +3,20 @@
 const { db } = require('../../../../config/database');
 const categoryRepository = require('../../../../api/category/category.repository');
 
-describe('countByName', () => {
-    const query = 'SELECT COUNT(*) count FROM category WHERE name = ?';
+describe('existsByName', () => {
+    const query = 'SELECT EXISTS (SELECT 1 FROM category WHERE name = ?) AS count';
 
     it('name으로 카운트 후 count를 반환해야함', async () => {
         // given
         const name = '테스트';
-        const mockedCount = BigInt(1);
+        const mockedCount = 1;
         const mockedDbQuery = jest.fn().mockImplementation((query, values, callback) => {
             callback(null, [{ count: mockedCount }]);
         });
         db.query = mockedDbQuery;
 
         // when
-        const result = await categoryRepository.countByName(name);
+        const result = await categoryRepository.existsByName(name);
 
         // then
         expect(result).toBe(mockedCount);
@@ -34,7 +34,7 @@ describe('countByName', () => {
 
         // when
         // then
-        await expect(categoryRepository.countByName(name))
+        await expect(categoryRepository.existsByName(name))
             .rejects.toThrow(mockedError);
         expect(mockedDbQuery).toHaveBeenCalledWith(query, [name], expect.any(Function));
     });
