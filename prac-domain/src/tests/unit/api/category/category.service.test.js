@@ -48,7 +48,7 @@ describe('createCategory', () => {
 
         it('중복 검사후 카테고리 아이디와 이름을 반환', async () => {
             // given
-            const expectedResult = { categoryId: BigInt(1), name };
+            const expectedResult = { categoryId: 1, name };
             categoryRepository.existsByName = jest.fn().mockResolvedValue(0);
             categoryRepository.save = jest.fn().mockResolvedValue({ affectedRows: 1, categoryId: expectedResult.categoryId });
 
