@@ -3,10 +3,10 @@
 const { db } = require("../../config/database");
 
 module.exports = {
-    save: (userId, title, content) => {
+    save: (userId, title, content, categoryId) => {
         return new Promise((resolve, reject) => {
-            const query = 'INSERT INTO post (user_id, title, content) VALUES(?, ?, ?);';
-            db.query(query, [userId, title, content], (error, data) => {
+            const query = 'INSERT INTO post (user_id, title, content, categoryId) VALUES(?, ?, ?, ?);';
+            db.query(query, [userId, title, content, categoryId], (error, data) => {
                 if (error) reject(error);
                 else resolve({ //OkPacket { affectedRows: 1, insertId: 4n, warningStatus: 0 }
                     affectedRows: data.affectedRows, // int
