@@ -10,8 +10,8 @@ const findVerifiedPostByPostId = async (postId) => { // post 작성자의 email�
 };
 
 module.exports = {
-    createPost: async (userId, title, content) => {
-        const { postId } = await postRepository.save(userId, title, content);
+    createPost: async (userId, title, content, categoryId) => {
+        const { postId } = await postRepository.save(userId, title, content, categoryId);
         return Number(postId);
     },
 

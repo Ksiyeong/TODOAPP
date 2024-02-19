@@ -2,15 +2,18 @@
 
 const userService = require("../user/user.service");
 const postService = require("./post.service");
+const categoryService = require('../category/category.service');
 
+//TODO category 관련 추가해야함
 module.exports = {
     // 게시글 생성
     postPost: async (req, res, next) => {
         try {
-            const { email, title, content } = req.body; // requestBody에서 데이터 추출
+            const { email, title, content, categoryId } = req.body; // requestBody에서 데이터 추출
 
             const { userId } = await userService.findUser(email); // email로 유효한 회원 검색
-            const postId = await postService.createPost(userId, title, content); // post 생성
+            await categoryService.findVerifiedCategoryById(categoryId);
+            const postId = await postService.createPost(userId, title, content, categoryId); // post 생성
 
             res.status(201).json({ postId }); // 응답
             next();
