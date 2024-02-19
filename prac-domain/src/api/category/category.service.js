@@ -17,4 +17,10 @@ module.exports = {
             name
         };
     },
+
+    findVerifiedCategoryById: async (categoryId) => {
+        const category = await categoryRepository.findById(categoryId);
+        if (category) return category;
+        else throw new CustomError('NOT FOUND', 404, 'C404', '존재하지 않는 카테고리입니다.');
+    },
 };
