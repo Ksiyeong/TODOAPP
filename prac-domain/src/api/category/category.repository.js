@@ -25,4 +25,19 @@ module.exports = {
             });
         });
     },
+
+    // category 단건 조회
+    findById: (categoryId) => {
+        return new Promise((resolve, reject) => {
+            const query = `
+            SELECT * FROM category
+            WHERE category_id = ?
+            LIMIT 1;
+            `;
+            db.query(query, [categoryId], (error, data) => {
+                if (error) reject(error);
+                else resolve(data[0]);
+            });
+        });
+    },
 };
