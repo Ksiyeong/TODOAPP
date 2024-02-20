@@ -25,6 +25,8 @@ module.exports = {
             modifiedAt: post.modified_at,
             userId: post.user_id,
             email: post.email,
+            categoryId: post.category_id,
+            categoryName: post.category_name
         };
     },
 
