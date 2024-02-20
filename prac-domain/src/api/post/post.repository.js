@@ -54,30 +54,67 @@ module.exports = {
         });
     },
 
-    search: (param, limit, offset) => {
+    search: (param, categoryId, limit, offset) => {
         return new Promise((resolve, reject) => {
-            const query = `
-            SELECT p.*, u.email FROM post p
+            let query = `
+            SELECT p.*, u.email, c.name AS category_name FROM post p
             INNER JOIN users u ON u.user_id = p.user_id
-            WHERE p.title LIKE ? OR p.content LIKE ?
-            LIMIT ? OFFSET ?;
+            INNER JOIN category c ON c.category_id = p.category_id
             `;
-            const searchTerm = `%${param}%`;
-            db.query(query, [searchTerm, searchTerm, limit, offset], (error, data) => {
+            const parameters = [];
+
+            // WHERE절 설정
+            if (param || categoryId) {
+                query += ' WHERE';
+                // param 설정
+                if (param) {
+                    query += ' (p.title LIKE ? OR p.content LIKE ?)';
+                    const searchTerm = `%${param}%`;
+                    parameters.push(searchTerm, searchTerm);
+                }
+                // 둘다 있을 경우 AND 추가
+                if (param && categoryId) query += ' AND';
+                // categoryId 설정
+                if (categoryId) {
+                    query += ' p.category_id = ?';
+                    parameters.push(categoryId);
+                }
+            }
+            // 검색 인덱싱 설정
+            query += ' LIMIT ? OFFSET ?;';
+            parameters.push(limit, offset);
+
+            db.query(query, parameters, (error, data) => {
                 if (error) reject(error);
                 else resolve(data);
             });
         });
     },
 
-    getTotalCount: (param) => {
+    getTotalCount: (param, categoryId) => { //TODO search 처럼 동적쿼리로 변경할것.
         return new Promise((resolve, reject) => {
-            const query = `
-            SELECT COUNT(*) total FROM post
-            WHERE title LIKE ? OR content LIKE ?;
-            `;
-            const searchTerm = `%${param}%`;
-            db.query(query, [searchTerm, searchTerm], (error, data) => {
+            let query = 'SELECT COUNT(*) total FROM post';
+            const parameters = [];
+
+            // WHERE절 설정
+            if (param || categoryId) {
+                query += ' WHERE';
+                // param 설정
+                if (param) {
+                    query += ' (title LIKE ? OR content LIKE ?)';
+                    const searchTerm = `%${param}%`;
+                    parameters.push(searchTerm, searchTerm);
+                }
+                // 둘다 있을 경우 AND 추가
+                if (param && categoryId) query += ' AND';
+                // categoryId 설정
+                if (categoryId) {
+                    query += ' category_id = ?';
+                    parameters.push(categoryId);
+                }
+            }
+
+            db.query(query, parameters, (error, data) => {
                 if (error) reject(error);
                 else resolve(Number(data[0].total));
             });

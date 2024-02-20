@@ -28,9 +28,9 @@ module.exports = {
         };
     },
 
-    findPosts: async (param, size, start) => {
-        const total = await postRepository.getTotalCount(param);
-        const posts = await postRepository.search(param, size, start);
+    findPosts: async (param, categoryId, size, start) => {
+        const total = await postRepository.getTotalCount(param, categoryId);
+        const posts = await postRepository.search(param, categoryId, size, start);
         return { total, size, start, posts };
     },
 

@@ -40,11 +40,12 @@ module.exports = {
     getPosts: async (req, res, next) => {
         try {
             //TODO: 데이터 유효성 검사 해야함
-            const param = req.query.param || '';
+            const param = req.query.param || null;
+            const categoryId = req.query.categoryId || null;
             const size = Number(req.query.size) || 10;
             const start = Number(req.query.start) || 0;
 
-            const response = await postService.findPosts(param, size, start);
+            const response = await postService.findPosts(param, categoryId, size, start);
 
             res.status(200).json(response);
             next();
