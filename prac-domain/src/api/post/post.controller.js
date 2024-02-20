@@ -4,7 +4,6 @@ const userService = require("../user/user.service");
 const postService = require("./post.service");
 const categoryService = require('../category/category.service');
 
-//TODO category 관련 추가해야함
 module.exports = {
     // 게시글 생성
     postPost: async (req, res, next) => {
