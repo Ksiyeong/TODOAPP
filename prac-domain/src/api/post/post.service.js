@@ -36,14 +36,15 @@ module.exports = {
         return { total, size, start, posts };
     },
 
-    updatePost: async (postId, email, title, content) => {
+    updatePost: async (postId, email, title, content, categoryId) => {
         const post = await findVerifiedPostByPostId(postId);
         // 권한 검사
         if (post.email !== email) throw new CustomError('Forbidden', 403, 'P403', '게시글에 대한 접근 권한이 없습니다.');
         // 게시글 수정
         if (title) post.title = title;
         if (content) post.content = content;
-        await postRepository.update(post.post_id, post.title, post.content);
+        if (categoryId) post.category_id = categoryId;
+        await postRepository.update(post.post_id, post.title, post.content, post.category_id);
         return;
     },
 

@@ -58,9 +58,9 @@ module.exports = {
     patchPost: async (req, res, next) => {
         try {
             const postId = req.params.postId;
-            const { email, title, content } = req.body; // requestBody에서 데이터 추출
+            const { email, title, content, categoryId } = req.body; // requestBody에서 데이터 추출
 
-            await postService.updatePost(postId, email, title, content); // post 수정
+            await postService.updatePost(postId, email, title, content, categoryId); // post 수정
 
             res.status(200).json({ postId });
             next();

@@ -31,14 +31,14 @@ module.exports = {
         });
     },
 
-    update: (postId, title, content) => {
+    update: (postId, title, content, categoryId) => {
         return new Promise((resolve, reject) => {
             const query = `
             UPDATE post
-            SET title = ?, content = ?
+            SET title = ?, content = ?, category_id = ?
             WHERE post_id = ?;
             `;
-            db.query(query, [title, content, postId], (error, data) => {
+            db.query(query, [title, content, categoryId, postId], (error, data) => {
                 if (error) reject(error);
                 else resolve(data);
             });
